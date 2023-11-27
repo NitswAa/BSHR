@@ -15,14 +15,16 @@ from hypothesis.generator import generate_new_hypothesis
 from hypothesis.checker import check_satisficed, check_exhausted
 from hypothesis.synthesizer import synthesize_main_answer
 
+MAX_ITERATIONS = 3
+
 def bshr_loop(query):
     logger.info("Started the BSHR loop with query: {}".format(query))
     all_keywords = []  # list of lists of strings
-    all_search_results = []  # list of dicts with "query", "source", and "content"
+    all_search_results = []  # list of dicts with "query", "source", and "content" -- "content" is also a dict
     all_hypotheses = []  # list of strings
     try:
-        while True:
-            logger.debug("Starting new iteration of BSHR loop.")
+        for i in range(MAX_ITERATIONS):
+            logger.debug("Starting iteration {} of BSHR loop.".format(i))
 
             # debug the current loop state
             logger.debug("Keywords: {}".format(all_keywords))
@@ -53,6 +55,8 @@ def bshr_loop(query):
             if check_exhausted(query, all_search_results):
                 logger.warning("Search exhausted. Exiting loop.")
                 return all_search_results, all_hypotheses
+        logger.info("Max iterations reached. Exiting loop.")
+        return all_search_results, all_hypotheses
     except Exception as e:
         logger.error("Exception occurred in BSHR loop: {}".format(e))
         raise e

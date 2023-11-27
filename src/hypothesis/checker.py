@@ -4,6 +4,11 @@ from utils.llm_tools import call_openai
 # Set up logging
 from utils.logger import logger  
 
+def get_description_from_result(result):
+    # For efficiency's sake, only want first element
+    # per search result. (Search cheap, LLM expensive) Therefore extract element 0.
+    return result['content'][0]['description']
+
 def check_satisficed(main_query: str, all_search_results: list, all_hypotheses: list) -> bool:
     """
     Checks if the query has been satisfactorily addressed by the current search results and hypotheses.
@@ -15,7 +20,7 @@ def check_satisficed(main_query: str, all_search_results: list, all_hypotheses: 
         Determine if the following query has been satisfactorily addressed:
 
         Query: {main_query}
-        Search Results: {[result['content'] for result in all_search_results]}
+        Search Results: {[get_description_from_result(result) for result in all_search_results]}
         Hypotheses: {all_hypotheses}
 
         Answer "yes" if the query has been addressed thoroughly and no significant information is likely missing. Otherwise, answer "no".
@@ -26,9 +31,9 @@ def check_satisficed(main_query: str, all_search_results: list, all_hypotheses: 
         response = json.loads(call_openai(messages=[prompt]))
         answer = response.get("content", "").strip().lower()
 
-        if answer == "yes":
+        if answer[slice(3)] == "yes":
             return True
-        elif answer == "no":
+        elif answer[slice(2)] == "no":
             return False
         else:
             raise ValueError(f"Invalid response from LLM: {answer}")
@@ -47,7 +52,7 @@ def check_exhausted(main_query: str, all_search_results: list) -> bool:
         Assess if additional searching will likely yield more useful information for the following query:
 
         Query: {main_query}
-        Search Results: {[result['content'] for result in all_search_results]}
+        Search Results: {[get_description_from_result(result) for result in all_search_results]}
 
         Answer "yes" if you think all useful search avenues have been exhausted. Otherwise, answer "no".
         '''
@@ -57,9 +62,9 @@ def check_exhausted(main_query: str, all_search_results: list) -> bool:
         response = json.loads(call_openai(messages=[prompt]))
         answer = response.get("content", "").strip().lower()
 
-        if answer == "yes":
+        if answer[slice(3)] == "yes":
             return True
-        elif answer == "no":
+        elif answer[slice(2)] == "no":
             return False
         else:
             raise ValueError(f"Invalid response from LLM: {answer}")

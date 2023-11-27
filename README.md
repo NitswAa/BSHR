@@ -1,15 +1,18 @@
 # BSHR Project
 
 ## Overview
+
 The BSHR (Brainstorm, Search, Hypothesize, Refine) project is an innovative information processing application. It leverages the power of AI to process complex queries, combining web search and AI-driven hypothesis generation. The application iteratively refines user queries, gathers relevant information, and synthesizes insightful answers. [Idea](https://youtu.be/WJ3Yk07ETP0?t=1071) from [Dave Shapiro](https://github.com/daveshap/BSHR_Loop), project developed by Joe Crowley.
 
 ## Features
+
 - **Dynamic Query Expansion**: Generates evolving search queries based on initial user input and ongoing analysis.
 - **Web Search Integration**: Utilizes the Bing Web Search API for comprehensive and current internet data retrieval.
 - **AI-Driven Hypothesis Generation**: Employs OpenAI's GPT-4 for crafting hypotheses and insights from search results.
 - **Insightful Answer Synthesis**: Combines all gathered data into a coherent and detailed final answer.
 
 ## Installation
+
 1. **Clone the Repository**:
    ```
    git clone https://github.com/joseph-crowley/BSHR.git
@@ -24,18 +27,23 @@ The BSHR (Brainstorm, Search, Hypothesize, Refine) project is an innovative info
    - Add your OpenAI API key to `OPENAI_API_KEY`.
 
 ## Configuration
+
 Set up your API keys and configure endpoints in `config/settings.py`. Customize logging preferences in `src/utils/logger.py`.
 
 ## Usage
+
 Set up logs dir and Run the application:
+
 ```
 mkdir logs
 cd src/
 python main.py
 ```
+
 Input your query when prompted and the system will process and synthesize the response.
 
 ## Project Structure
+
 - `config/`: Stores application settings. Add your API keys and configure endpoints here.
 - `src/main.py`: Entry point of the application.
 - `src/query_processing/`: Handles query generation, execution, and result updating.
@@ -43,26 +51,34 @@ Input your query when prompted and the system will process and synthesize the re
 - `logs/`: Stores application logs.
 
 ## Development Guide
+
 ### Extending Functionality
+
 - Modify modules in `src/query_processing` and `src/hypothesis` for enhancements.
 - Add new modules as needed, ensuring integration with the main application flow in `src/main.py`.
 
 ### Testing
+
 Run unit tests in `src/tests/` using a framework like pytest to ensure functionality and prevent regressions.
 
 ## Contributing
+
 We welcome contributions. Please adhere to the project's coding style, include unit tests for new features, and document your changes.
 
 ## License
+
 Specify the license under which the project is released.
 
 ---
 
 # User's Guide
+
 ## Getting Started
+
 Execute `main.py` and input your query when prompted.
 
 ## Interaction
+
 Observe the console output as the system processes your query, searching the web and generating hypotheses.
 
 ## Logs and Results
@@ -70,17 +86,24 @@ Observe the console output as the system processes your query, searching the web
 Logs are in logs/application.log
 
 ## Receiving Answers
+
 The application will display the final synthesized answer after completing its analysis.
 
 ## Query Tips
+
 - Provide detailed queries for more specific results.
 - Allow time for complex queries to be fully processed and answered.
+
+## Other
+
+- Due to interacting with web searches, occasionally characters not encoded with utf-8 will be sent to the logger, and will flag error messages. However, GPT is perfectly capable of parsing these as it was trained on web data, and python encodes them fine as a string. They do not indicate a crash or malfunction, at least of the primary system.
 
 ---
 
 ## Example Query and Response
 
 ### Query
+
 ```
 $ python main.py
 

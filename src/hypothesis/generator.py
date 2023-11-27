@@ -4,12 +4,17 @@ from utils.llm_tools import call_openai
 # Set up logging
 from utils.logger import logger  
 
+def get_description_from_result(result):
+    # For efficiency's sake, only want first element
+    # per search result. (Search cheap, LLM expensive) Therefore extract element 0.
+    return result['content'][0]['description']
+
 def generate_new_hypothesis(main_query: str, all_search_results: list, existing_hypotheses: list) -> str:
     """
     Generates a new hypothesis based on the main query, all search results, and existing hypotheses.
     """
     # Collate data from search results and existing hypotheses
-    search_contents = [result['content'] for result in all_search_results]
+    search_contents = [get_description_from_result(result) for result in all_search_results]
 
     # Prepare the prompt for LLM with detailed instructions, example, and constraints
     prompt = {

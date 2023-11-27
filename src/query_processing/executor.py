@@ -1,5 +1,6 @@
 import requests
 from typing import List, Dict
+from utils.logger import logger
 import json
 import config.settings
 
@@ -31,7 +32,7 @@ def execute_search(query: str) -> Dict:
         return {
             'query': query,
             'source': 'Bing Web Search API',
-            'content': json.dumps(simplified_results)
+            'content': simplified_results
         }
     except Exception as e:
         print(f"Error occurred while searching for '{query}': {e}")
